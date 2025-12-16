@@ -1,0 +1,114 @@
+# API Contract: Book Content Service
+
+## Overview
+This API provides access to book content and supports the RAG (Retrieval Augmented Generation) chatbot functionality by providing content retrieval capabilities.
+
+## Base URL
+`/api/v1`
+
+## Endpoints
+
+### GET /content/modules
+Retrieve list of available modules in the book.
+
+**Response:**
+```json
+{
+  "modules": [
+    {
+      "id": "module-1-ros2-nervous-system",
+      "title": "Module 1: The Robotic Nervous System (ROS 2)",
+      "description": "Learn how ROS 2 connects AI logic to humanoid robot bodies",
+      "chapters": [
+        {
+          "id": "chapter-1-ros2-and-physical-ai",
+          "title": "ROS 2 and Physical AI",
+          "position": 1
+        },
+        {
+          "id": "chapter-2-ros2-communication-basics",
+          "title": "ROS 2 Communication Basics",
+          "position": 2
+        },
+        {
+          "id": "chapter-3-from-ai-agents-to-robot-bodies",
+          "title": "From AI Agents to Robot Bodies",
+          "position": 3
+        }
+      ]
+    }
+  ]
+}
+```
+
+### GET /content/modules/{moduleId}/chapters
+Retrieve list of chapters for a specific module.
+
+**Parameters:**
+- `moduleId` (path): ID of the module
+
+**Response:**
+```json
+{
+  "moduleId": "module-1-ros2-nervous-system",
+  "chapters": [
+    {
+      "id": "chapter-1-ros2-and-physical-ai",
+      "title": "ROS 2 and Physical AI",
+      "content": "# Chapter 1: ROS 2 and Physical AI\n\n## What is ROS 2?...",
+      "position": 1
+    }
+  ]
+}
+```
+
+### GET /content/search
+Search across all book content.
+
+**Parameters:**
+- `q` (query): Search query string
+- `limit` (query, optional): Maximum number of results (default: 10)
+
+**Response:**
+```json
+{
+  "query": "ROS 2 communication",
+  "results": [
+    {
+      "id": "chapter-2-ros2-communication-basics",
+      "title": "ROS 2 Communication Basics",
+      "module": "module-1-ros2-nervous-system",
+      "content_snippet": "## Publisher-Subscriber vs Request-Response\nThe publisher-subscriber pattern is used for continuous data streams like sensor data...",
+      "url": "/docs/module-1-ros2-nervous-system/chapter-2-ros2-communication-basics"
+    }
+  ]
+}
+```
+
+### POST /rag/query
+Submit a query to the RAG system for answers based on book content.
+
+**Request:**
+```json
+{
+  "query": "How does ROS 2 connect AI to robot bodies?",
+  "context_module": "module-1-ros2-nervous-system",
+  "max_tokens": 500
+}
+```
+
+**Response:**
+```json
+{
+  "query": "How does ROS 2 connect AI to robot bodies?",
+  "answer": "ROS 2 connects AI logic to robot bodies through its communication infrastructure...",
+  "sources": [
+    {
+      "title": "Chapter 3: From AI Agents to Robot Bodies",
+      "url": "/docs/module-1-ros2-nervous-system/chapter-3-from-ai-agents-to-robot-bodies",
+      "confidence": 0.95
+    }
+  ],
+  "tokens_used": 150
+}
+```

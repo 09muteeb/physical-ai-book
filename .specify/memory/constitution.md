@@ -1,55 +1,75 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- SYNC IMPACT REPORT
+Version change: 1.0.0 → 1.1.0
+Modified principles:
+- Added 5 core principles based on project requirements
+Added sections: Book Creation Standards, RAG Chatbot Standards, Constraints, Success Criteria
+Removed sections: None
+Templates requiring updates:
+- .specify/templates/plan-template.md ✅ reviewed and aligned
+- .specify/templates/spec-template.md ✅ reviewed and aligned
+- .specify/templates/tasks-template.md ✅ reviewed and aligned
+- .specify/templates/phr-template.prompt.md ✅ reviewed and aligned
+Follow-up TODOs: None
+-->
+
+# Unified AI-Driven Book with Embedded RAG Chatbot Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Spec-First, AI-Native Development
+Every feature and component must be specified before implementation begins; All development follows AI-native patterns and leverages Claude Code + Spec-Kit Plus tools; Clear separation between business requirements and technical implementation.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Technical Accuracy and Verifiability
+All code and documentation must be technically accurate and verifiable against real implementations; No hallucinated APIs or undocumented behaviors allowed; All external dependencies and services must be validated and documented.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### Clear, Developer-Focused Explanations
+Documentation and code must prioritize clarity and developer understanding; All examples must be complete, runnable, and well-explained; Focus on practical, implementable solutions rather than theoretical concepts.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### No Hallucinated APIs or Undocumented Behavior
+Development must be based on real, existing APIs and documented behavior only; No invented interfaces, endpoints, or services without proper documentation; Strict adherence to existing technology capabilities and limitations.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Free-Tier Compatible Services
+All selected technologies and services must be compatible with free-tier offerings; No services that require paid plans for basic functionality; Cost-conscious decisions that maintain functionality while minimizing expenses.
 
-### [PRINCIPLE_6_NAME]
+### Modularity and Independence
+Components must be modular and independently deployable where possible; Backend services should be deployable independently of frontend; Clear separation of concerns between book creation and RAG chatbot functionality.
 
+## Book Creation Standards
 
-[PRINCIPLE__DESCRIPTION]
+Book Creation:
+- Written using Claude Code + Spec-Kit Plus
+- Built with Docusaurus
+- Deployed to GitHub Pages
+- Modular, chapter-based structure with code examples
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## RAG Chatbot Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+RAG Chatbot:
+- Embedded in the book UI
+- Uses OpenAI Agents / ChatKit SDKs
+- Backend: FastAPI
+- Storage: Neon Serverless Postgres
+- Vector DB: Qdrant Cloud (Free Tier)
+- Must answer book-wide questions
+- Must answer questions based only on user-selected text
+- No response without retrieval
+- No hallucinated answers
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Constraints
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Free-tier compatible services only
+- No hard-coded secrets
+- Backend deployable independently
+- Specs must precede implementation
+
+## Success Criteria
+
+- Book builds and deploys successfully
+- RAG chatbot works in production
+- Context-restricted answering
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+All development must follow the Spec-First methodology with proper documentation before implementation. Changes to this constitution require explicit approval and must be documented in an Architectural Decision Record (ADR). All code reviews must verify compliance with these principles. Development workflow must follow the sequence: spec → plan → tasks → implementation.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.0 | **Ratified**: 2025-12-16 | **Last Amended**: 2025-12-16

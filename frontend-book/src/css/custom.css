@@ -1,0 +1,50 @@
+/* Modern Dark Footer */
+.footer {
+  background-color: var(--color-gray-900);
+  color: var(--color-gray-300);
+  border-top: 1px solid var(--color-gray-700);
+  padding: 3rem 0 2rem;
+}
+
+html[data-theme='dark'] .footer {
+  background-color: var(--color-gray-900);
+  color: var(--color-gray-300);
+  border-top: 1px solid var(--color-gray-700);
+}
+
+/* Footer Links */
+.footer__link-item {
+  color: var(--color-gray-400);
+}
+
+html[data-theme='dark'] .footer__link-item {
+  color: var(--color-gray-400);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary-light);
+}
+
+html[data-theme='dark'] .footer__link-item:hover {
+  color: var(--ifm-color-primary-light);
+}
+
+/* Footer Title */
+.footer__title {
+  color: var(--color-gray-100);
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+html[data-theme='dark'] .footer__title {
+  color: var(--color-gray-100);
+}
+
+/* Footer Copyright */
+.footer__copyright {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+}
+
+html[data-theme='dark'] .footer__copyright {
+  color: var(--color-gray-500);
+}
