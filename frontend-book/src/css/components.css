@@ -370,12 +370,91 @@ html[data-theme='dark'] .table-wrapper table td {
   overflow: hidden;
   box-shadow: var(--ifm-global-shadow);
   display: inline-block;
+  width: 100%;
 }
 
 .image-wrapper img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Responsive adjustments for mobile */
+@media screen and (max-width: 768px) {
+  .image-wrapper {
+    margin: 1rem 0;
+  }
+
+  .card-custom {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .alert {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .table-wrapper {
+    margin: 1rem 0;
+  }
+
+  .table-wrapper table th,
+  .table-wrapper table td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .button--large {
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+  }
+
+  .button--small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .image-wrapper {
+    margin: 0.75rem 0;
+  }
+
+  .card-custom {
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+  }
+
+  .alert {
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+  }
+
+  .table-wrapper {
+    margin: 0.8rem 0;
+  }
+
+  .table-wrapper table th,
+  .table-wrapper table td {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .button--large {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.95rem;
+  }
 }
 
 /* Navigation Enhancements */

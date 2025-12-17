@@ -47,6 +47,7 @@ const config = {
         blog: false, // Optional: disable the blog plugin
         theme: {
           customCss: [
+            './src/css/variables.css',
             './src/css/custom.css',
             './src/css/components.css'
           ],
@@ -58,6 +59,12 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Enable dark mode toggle
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {

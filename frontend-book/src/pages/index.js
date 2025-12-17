@@ -76,7 +76,7 @@ export default function Home() {
         <section className={styles.imagesSection}>
           <div className="container">
             <div className="row">
-              <div className={`col col--4 ${styles.col}`} style={{padding: '10px'}}>
+              <div className={`col col--4 ${styles.col} ${styles.responsiveCol}`} style={{padding: '10px'}}>
                 <img
                   src="/img/pic-1.png"
                   alt="Physical AI"
@@ -85,7 +85,7 @@ export default function Home() {
                 <h2 className={styles.imageTitle}>Physical AI</h2>
                 <p className={styles.imageDescription}>Learn how to connect artificial intelligence with the physical world through robotics.</p>
               </div>
-              <div className={`col col--4 ${styles.col}`} style={{padding: '10px'}}>
+              <div className={`col col--4 ${styles.col} ${styles.responsiveCol}`} style={{padding: '10px'}}>
                 <img
                   src="/img/pic-2.png"
                   alt="ROS 2 Fundamentals"
@@ -94,7 +94,7 @@ export default function Home() {
                 <h2 className={styles.imageTitle}>ROS 2 Fundamentals</h2>
                 <p className={styles.imageDescription}>Understand how ROS 2 serves as the "nervous system" connecting AI to robot bodies.</p>
               </div>
-              <div className={`col col--4 ${styles.col}`} style={{padding: '10px'}}>
+              <div className={`col col--4 ${styles.col} ${styles.responsiveCol}`} style={{padding: '10px'}}>
                 <img
                   src="/img/pic-3.png"
                   alt="Practical Examples"
