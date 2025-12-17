@@ -16,6 +16,47 @@
   }
 }
 
+.heroContent {
+  margin-bottom: 1.5rem;
+}
+
+.authorSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.profileContainer {
+  display: inline-block;
+  position: relative;
+}
+
+.profilePic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.profilePic:hover {
+  transform: scale(1.1);
+}
+
+.authorLine {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: inherit;
+  opacity: 0.9;
+}
+
 .buttons {
   display: flex;
   align-items: center;
@@ -27,6 +68,50 @@
   align-items: center;
   padding: 2rem 0;
   width: 100%;
+}
+
+.imagesSection {
+  padding: 2rem 0;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.imagesSection .col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.imagesSection img {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.imagesSection img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.imagesSection h2 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.imagesSection p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.imageTitle {
+  font-size: 1.4rem !important;
+  margin: 0.75rem 0 !important;
+}
+
+.imageDescription {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
 }
 
 .featureSvg {
