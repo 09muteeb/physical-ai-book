@@ -8,6 +8,7 @@ const sidebars = {
       label: 'Physical AI Introduction',
       items: [
         'intro',
+        'vercel-web-analytics',
       ],
     },
     {
