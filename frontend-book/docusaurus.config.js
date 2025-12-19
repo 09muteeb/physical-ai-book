@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Physical AI Book',
   tagline: 'Connecting AI Logic to Robot Bodies',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.svg.png',
 
   // Set the production url of your site here
   url: 'https://physical-ai-book-rose.vercel.app',
@@ -71,7 +71,9 @@ const config = {
         title: 'Physical AI Book',
         logo: {
           alt: 'Physical AI Book Logo',
-          src: 'img/logo.svg.png',  // Changed to use the existing logo file
+          src: 'img/logo.svg.png',
+          width: 48,
+          height: 48,
         },
         items: [
           {
@@ -93,8 +95,8 @@ const config = {
           alt: 'Physical AI Book Logo',
           src: 'img/logo.svg.png',
           href: '/',
-          width: 32,
-          height: 32,
+          width: 48,
+          height: 48,
         },
         links: [
           {

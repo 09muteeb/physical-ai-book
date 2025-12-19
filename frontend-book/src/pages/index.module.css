@@ -8,6 +8,46 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 2px solid #93c5fd;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+  margin: 2rem 2.5%;
+  width: 95%;
+}
+
+.heroTitle {
+  font-size: 3.5rem !important;
+  font-weight: 800;
+  margin-bottom: 1rem !important;
+  color: #1e293b;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem !important;
+  margin-bottom: 2rem !important;
+  color: #334155;
+  font-weight: 400;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.4;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.descriptionText {
+  font-size: 1.15rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1rem !important;
+  color: #334155;
+  font-weight: 400;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media screen and (max-width: 996px) {
@@ -155,9 +195,23 @@
   text-align: center;
 }
 
+.imagesSection {
+  padding: 2rem 0;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.imagesSection .col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .imagesSection .col.responsiveCol {
   flex: 1 1 auto;
 }
+
 
 @media screen and (max-width: 768px) {
   .imagesSection .col.responsiveCol {
@@ -206,6 +260,109 @@
 .imageDescription {
   font-size: 1.1rem !important;
   margin: 0 !important;
+}
+
+/* Enhanced book description section */
+.bookDescriptionSection {
+  padding: 2rem 0;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, #e0f2fe 0%, #c7d7fe 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.bookDescriptionSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.bookDescriptionContainer {
+  position: relative;
+  z-index: 1;
+}
+
+.bookDescriptionTitle {
+  font-size: 2rem !important;
+  font-weight: 700;
+  margin-bottom: 1.5rem !important;
+  color: #1e293b;
+  text-align: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.bookDescriptionContent {
+  text-align: center;
+}
+
+.bookDescriptionText {
+  font-size: 1.15rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1rem !important;
+  color: #334155;
+  font-weight: 400;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bookDescriptionText.lead {
+  font-size: 1.3rem !important;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.bookDescriptionText strong {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* Dark mode support */
+html[data-theme='dark'] .heroBanner {
+  background: linear-gradient(135deg, #1e293b 0%, #374151 100%);
+  border: 2px solid #4f46e5;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+}
+
+html[data-theme='dark'] .heroTitle {
+  color: #f1f5f9;
+}
+
+html[data-theme='dark'] .heroSubtitle {
+  color: #cbd5e1;
+}
+
+html[data-theme='dark'] .descriptionText {
+  color: #cbd5e1;
+}
+
+html[data-theme='dark'] .bookDescriptionSection {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+}
+
+html[data-theme='dark'] .bookDescriptionTitle {
+  color: #f1f5f9;
+}
+
+html[data-theme='dark'] .bookDescriptionText {
+  color: #cbd5e1;
+}
+
+html[data-theme='dark'] .bookDescriptionText.lead {
+  color: #e2e8f0;
+}
+
+html[data-theme='dark'] .bookDescriptionText strong {
+  color: #60a5fa;
 }
 
 .featureSvg {

@@ -8,11 +8,23 @@ import styles from './index.module.css';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
         <div className={styles.heroContent}>
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <h1 className={styles.heroTitle}>{siteConfig.title}</h1>
+          <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+          <div className="text--center padding-horiz--md">
+            <p className={styles.descriptionText}>
+              <strong>Physical AI</strong> bridges the gap between artificial intelligence and robotics,
+              teaching you how to connect AI logic with physical robot bodies. This comprehensive guide
+              covers ROS 2 as the robotic nervous system, digital twins and simulation for safe AI development,
+              and NVIDIA Isaac for AI-powered robot brains.
+            </p>
+            <p className={styles.descriptionText}>
+              Perfect for robotics enthusiasts, AI researchers, and developers looking to build intelligent
+              systems that can interact with the real world through practical examples and theoretical foundations.
+            </p>
+          </div>
           <div className={styles.authorSection}>
             <div className={styles.profileContainer}>
               <img
@@ -64,6 +76,38 @@ function HomepageHeader() {
   );
 }
 
+function BookDescription() {
+  return (
+    <section className={styles.bookDescriptionSection}>
+      <div className="container">
+        <div className="row">
+          <div className="col col--12">
+            <h2 className={styles.bookDescriptionTitle}>About This Book</h2>
+            <div className={styles.bookDescriptionContent}>
+              <p className={`${styles.bookDescriptionText} ${styles.lead}`}>
+                <strong>Physical AI</strong> is a comprehensive guide that bridges the gap between artificial intelligence and robotics.
+                This book explores how to connect AI logic with physical robot bodies, creating intelligent systems that can interact with the real world.
+              </p>
+              <p className={styles.bookDescriptionText}>
+                The book covers three essential modules:
+                <strong> ROS 2 as the robotic nervous system</strong>,
+                <strong> digital twins and simulation for safe AI development</strong>, and
+                <strong> NVIDIA Isaac for AI-powered robot brains</strong>.
+                Each module builds upon the previous to create a complete understanding of Physical AI.
+              </p>
+              <p className={styles.bookDescriptionText}>
+                Whether you're a robotics enthusiast, AI researcher, or developer, this book provides
+                practical examples and theoretical foundations to help you build AI agents that can
+                effectively bridge to robot control systems and operate in the physical world.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
@@ -72,6 +116,7 @@ export default function Home() {
       description="Connecting AI Logic to Robot Bodies">
       <HomepageHeader />
       <main>
+        <BookDescription />
         {/* Images Section */}
         <section className={styles.imagesSection}>
           <div className="container">

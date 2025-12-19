@@ -6,7 +6,14 @@
       "Bash(findstr phr)",
       "Bash(mkdir -p history/prompts/constitution)",
       "Bash(mkdir -p specs/1-ros2-nervous-system)",
-      "Bash(.specify/scripts/powershell/create-new-feature.ps1 -Json \"Module:\nModule 3 – The AI-Robot Brain (NVIDIA Isaac™)\n\nTarget audience:\nAI students and developers learning advanced robotic perception and navigation\n\nGoal:\nExplain AI-powered perception, simulation, and path planning for humanoid robots\n\nChapters (Docusaurus pages):\n\nChapter 1: NVIDIA Isaac Sim Overview\n- Photorealistic simulation and synthetic data generation\n- Importance for training AI in robotics\n- Integration with humanoid robot models\n\nChapter 2: Isaac ROS for Perception\n- Hardware-accelerated VSLAM (Visual SLAM)\n- Sensor integration and environment mapping\n- Real-time perception concepts\n\nChapter 3: Path Planning with Nav2\n- Navigation and path planning for bipedal robots\n- Motion control concepts\n- High-level AI-to-robot decision pipeline\" --number 3 --short-name \"isaac-ai-brain\")"
+      "Bash(.specify/scripts/powershell/create-new-feature.ps1 -Json \"Module:\nModule 3 – The AI-Robot Brain (NVIDIA Isaac™)\n\nTarget audience:\nAI students and developers learning advanced robotic perception and navigation\n\nGoal:\nExplain AI-powered perception, simulation, and path planning for humanoid robots\n\nChapters (Docusaurus pages):\n\nChapter 1: NVIDIA Isaac Sim Overview\n- Photorealistic simulation and synthetic data generation\n- Importance for training AI in robotics\n- Integration with humanoid robot models\n\nChapter 2: Isaac ROS for Perception\n- Hardware-accelerated VSLAM (Visual SLAM)\n- Sensor integration and environment mapping\n- Real-time perception concepts\n\nChapter 3: Path Planning with Nav2\n- Navigation and path planning for bipedal robots\n- Motion control concepts\n- High-level AI-to-robot decision pipeline\" --number 3 --short-name \"isaac-ai-brain\")",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json)",
+      "Bash(.specify/scripts/powershell/setup-plan.ps1 -Json)",
+      "Bash(python -c \"import retrieval_validation; print\\(''Import successful''\\)\")",
+      "Bash(python -m unittest tests.test_retrieval_validation -v)",
+      "Bash(python -c:*)",
+      "Bash(python retrieval_validation.py --help)",
+      "Bash(python retrieval_validation.py:*)"
     ]
   }
 }
