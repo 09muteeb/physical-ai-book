@@ -3,3 +3,7 @@ qdrant-client
 beautifulsoup4
 requests
 python-dotenv
+openai
+fastapi
+uvicorn[standard]
+pydantic

@@ -4,7 +4,7 @@ Modified principles:
 - Added 5 core principles based on project requirements
 Added sections: Book Creation Standards, RAG Chatbot Standards, Constraints, Success Criteria
 Removed sections: None
-Templates requiring updates:
+    Templates requiring updates:
 - .specify/templates/plan-template.md ✅ reviewed and aligned
 - .specify/templates/spec-template.md ✅ reviewed and aligned
 - .specify/templates/tasks-template.md ✅ reviewed and aligned

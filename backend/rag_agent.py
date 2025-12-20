@@ -14,7 +14,7 @@ from typing import List, Dict, Optional
 from datetime import datetime
 import asyncio
 
-import openai
+from openai import OpenAI
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -38,7 +38,18 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY environment variable not set")
 
-openai.api_key = OPENAI_API_KEY
+# Initialize OpenAI client
+# Check if this is an OpenRouter key and configure accordingly
+if OPENAI_API_KEY.startswith("sk-or-"):
+    # This appears to be an OpenRouter API key
+    # Configure OpenAI client to use OpenRouter's API endpoint
+    client = OpenAI(
+        api_key=OPENAI_API_KEY,
+        base_url="https://openrouter.ai/api/v1"
+    )
+else:
+    # Use standard OpenAI endpoint
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Pydantic models for request/response
 class QueryRequest(BaseModel):
@@ -115,6 +126,7 @@ def retrieve_context(query: str, max_results: int = 5, threshold: float = 0.5) -
 def generate_answer(query: str, context_chunks: List[QueryResult]) -> str:
     """
     Generate an answer based on the query and retrieved context using OpenAI.
+    This function creates a temporary assistant for the query using the Assistants API.
 
     Args:
         query: The user's query
@@ -130,33 +142,117 @@ def generate_answer(query: str, context_chunks: List[QueryResult]) -> str:
             for chunk in context_chunks
         ])
 
-        # Prepare the prompt for OpenAI
-        system_prompt = """You are a helpful assistant that answers questions based strictly on the provided context.
-        Only use information from the context to answer the user's query. If the context doesn't contain
-        sufficient information to answer the query, state that clearly."""
-
-        user_prompt = f"""
-        Context:
-        {context_text}
-
-        Question: {query}
-
-        Please provide a comprehensive answer based only on the context provided above.
-        """
-
-        # Call OpenAI API to generate the answer
-        response = openai.ChatCompletion.create(
+        # Create an assistant for this specific query
+        assistant = client.beta.assistants.create(
+            name="Physical AI Book Assistant",
+            instructions="You are a helpful assistant that answers questions based strictly on the provided context. Only use information from the context to answer the user's query. If the context doesn't contain sufficient information to answer the query, state that clearly.",
             model="gpt-3.5-turbo",  # Can be configured to use gpt-4 if needed
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            max_tokens=1000,
-            temperature=0.3,
-            timeout=30
+            temperature=0.3
         )
 
-        answer = response.choices[0].message.content.strip()
+        # Create a thread for this conversation
+        thread = client.beta.threads.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Context:\n{context_text}\n\nQuestion: {query}\n\nPlease provide a comprehensive answer based only on the context provided above."
+                }
+            ]
+        )
+
+        # Run the assistant on the thread
+        run = client.beta.threads.runs.create(
+            thread_id=thread.id,
+            assistant_id=assistant.id
+        )
+
+        # Wait for the run to complete
+        import time
+        while run.status in ['queued', 'in_progress', 'requires_action']:
+            time.sleep(0.5)
+            run = client.beta.threads.runs.retrieve(
+                thread_id=thread.id,
+                run_id=run.id
+            )
+            # Handle any required actions if they come up
+            if run.status == 'requires_action':
+                logger.warning(f"Assistant requires action: {run.required_action}")
+
+        # Get the messages from the thread
+        messages = client.beta.threads.messages.list(
+            thread_id=thread.id,
+            order="desc"  # Get messages in descending order (newest first)
+        )
+
+        # Extract the assistant's response (first assistant message, which will be the newest)
+        answer = ""
+        for message in messages.data:
+            if message.role == "assistant":
+                for content_block in message.content:
+                    if content_block.type == "text":
+                        answer = content_block.text.value
+                        break
+                if answer:
+                    break
+
+        # Clean up: Delete the assistant (optional in production)
+        try:
+            client.beta.assistants.delete(assistant.id)
+        except:
+            pass  # Ignore cleanup errors
+
+        logger.info(f"Generated answer for query: '{query[:50]}...'")
+
+        return answer
+
+    except Exception as e:
+        logger.error(f"Error generating answer: {e}")
+        raise
+
+
+def generate_answer_with_chat_model(query: str, context_chunks: List[QueryResult]) -> str:
+    """
+    Generate an answer based on the query and retrieved context using OpenAI's Chat Completions API.
+
+    Args:
+        query: The user's query
+        context_chunks: List of retrieved context chunks
+
+    Returns:
+        Generated answer based on the context
+    """
+    try:
+        # Format context for the LLM
+        context_text = "\n\n".join([
+            f"Source: {chunk.source_url}\nContent: {chunk.content}"
+            for chunk in context_chunks
+        ])
+
+        # Create the message for the chat model
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that answers questions based strictly on the provided context. Only use information from the context to answer the user's query. If the context doesn't contain sufficient information to answer the query, state that clearly."
+            },
+            {
+                "role": "user",
+                "content": f"Context:\n{context_text}\n\nQuestion: {query}\n\nPlease provide a comprehensive answer based only on the context provided above."
+            }
+        ]
+
+        # Call the chat completions API
+        # Use a model that's available on OpenRouter
+        model_name = "openai/gpt-3.5-turbo"  # OpenRouter format for GPT-3.5
+        response = client.chat.completions.create(
+            model=model_name,
+            messages=messages,
+            temperature=0.3,
+            max_tokens=1000  # Limit response length
+        )
+
+        # Extract the answer from the response
+        answer = response.choices[0].message.content
+
         logger.info(f"Generated answer for query: '{query[:50]}...'")
 
         return answer
@@ -172,6 +268,51 @@ class RAGAgent:
 
     def __init__(self):
         self.qdrant_client = qdrant_client
+        # No need to create an assistant since we're using chat completions API
+
+    def generate_general_answer(self, query: str) -> str:
+        """
+        Generate a general answer using the LLM's knowledge when no specific context is found.
+
+        Args:
+            query: The user's query
+
+        Returns:
+            Generated answer based on the LLM's general knowledge
+        """
+        try:
+            # Create the message for the chat model
+            messages = [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant knowledgeable about robotics, AI, and related topics. Answer the user's question based on your general knowledge. If the question is about a specific concept, provide a comprehensive explanation."
+                },
+                {
+                    "role": "user",
+                    "content": query
+                }
+            ]
+
+            # Call the chat completions API
+            # Use a model that's available on OpenRouter
+            model_name = "openai/gpt-3.5-turbo"  # OpenRouter format for GPT-3.5
+            response = client.chat.completions.create(
+                model=model_name,
+                messages=messages,
+                temperature=0.3,
+                max_tokens=1000  # Limit response length
+            )
+
+            # Extract the answer from the response
+            answer = response.choices[0].message.content
+
+            logger.info(f"Generated general knowledge answer for query: '{query[:50]}...'")
+
+            return answer
+
+        except Exception as e:
+            logger.error(f"Error generating general answer: {e}")
+            return "I'm sorry, but I couldn't generate an answer for your question."
 
     async def process_query(self, query: str, max_results: int = 5, threshold: float = 0.5) -> QueryResponse:
         """
@@ -192,10 +333,13 @@ class RAGAgent:
 
         if not context_chunks:
             logger.warning(f"No relevant context found for query: '{query}'")
-            answer = "I couldn't find any relevant information in the knowledge base to answer your question."
+            # Instead of just returning an error, generate a general answer using the LLM's knowledge
+            # but inform the user that this is general knowledge, not from the book
+            general_answer = self.generate_general_answer(query)
+            answer = f"{general_answer}\n\n(Disclaimer: This answer is based on general knowledge as I couldn't find specific information about this topic in the Physical AI book.)"
         else:
-            # Step 2: Generate answer based on retrieved context
-            answer = generate_answer(query, context_chunks)
+            # Step 2: Generate answer based on retrieved context using chat model
+            answer = generate_answer_with_chat_model(query, context_chunks)
 
         # Prepare response
         response = QueryResponse(
@@ -218,8 +362,8 @@ class RAGAgent:
         logger.info(f"Query processed successfully: '{query[:30]}...'")
         return response
 
-# Create RAG agent instance
-rag_agent = RAGAgent()
+# Create RAG agent instance (will be initialized when needed)
+rag_agent = None
 
 @app.get("/")
 async def root():
@@ -237,7 +381,12 @@ async def query_endpoint(request: QueryRequest):
     Returns:
         QueryResponse with the answer and retrieved context
     """
+    global rag_agent
     try:
+        # Initialize RAG agent if not already created
+        if rag_agent is None:
+            rag_agent = RAGAgent()
+
         response = await rag_agent.process_query(
             query=request.query,
             max_results=request.max_results,
@@ -262,9 +411,11 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    port = int(os.getenv("PORT", 8000))  # Use PORT from environment, default to 8000
     uvicorn.run(
         "rag_agent:app",
         host="0.0.0.0",
-        port=8000,
+        port=port,
         reload=True
     )
