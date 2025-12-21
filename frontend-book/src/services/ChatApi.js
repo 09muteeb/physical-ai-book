@@ -34,12 +34,25 @@ class ChatApi {
     }
 
     try {
-      const response = await fetch(`${this.backendUrl}/query`, {
+      // Determine if we need to handle relative URLs for production
+      let fullUrl = `${this.backendUrl}/query`;
+
+      // If backendUrl is a relative path (starts with /), combine with current origin
+      if (this.backendUrl.startsWith('/')) {
+        fullUrl = `${window.location.origin}${this.backendUrl}/query`;
+      }
+
+      const response = await fetch(fullUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(requestBody),
+        // Add timeout and other options for better mobile compatibility
+        mode: 'cors',
+        credentials: 'omit' // Use 'include' if you need to send cookies
       });
 
       if (!response.ok) {
@@ -49,6 +62,10 @@ class ChatApi {
       return await response.json();
     } catch (error) {
       console.error('Error communicating with backend:', error);
+      // Provide more detailed error information
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        console.error('Network error - likely a CORS or connectivity issue');
+      }
       throw error;
     }
   }
@@ -59,7 +76,13 @@ class ChatApi {
    */
   async healthCheck() {
     try {
-      const response = await fetch(`${this.backendUrl}/health`);
+      // Handle relative URLs for production
+      let fullUrl = `${this.backendUrl}/health`;
+      if (this.backendUrl.startsWith('/')) {
+        fullUrl = `${window.location.origin}${this.backendUrl}/health`;
+      }
+
+      const response = await fetch(fullUrl);
       return response.ok;
     } catch (error) {
       console.error('Health check failed:', error);

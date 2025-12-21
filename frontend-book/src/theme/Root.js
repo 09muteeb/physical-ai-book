@@ -7,7 +7,13 @@ const Root = ({children}) => {
     <>
       {children}
       {/* Chat widget component - will appear on all pages */}
-      <ChatWidget backendUrl="http://localhost:8000" position="bottom-right" />
+      {/* Use relative path for production, localhost for development */}
+      <ChatWidget
+        backendUrl={typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+          ? '/api'
+          : 'http://localhost:8000'}
+        position="bottom-right"
+      />
     </>
   );
 };
