@@ -48,6 +48,16 @@ const ChatWidget = ({ backendUrl = 'http://localhost:8000', position = 'bottom-r
     setIsLoading(true);
     setError(null);
 
+    // Add temporary loading message - declare loadingId outside try block
+    const loadingId = 'loading-' + Date.now();
+    setMessages(prev => [...prev, {
+      id: loadingId,
+      text: '',
+      sender: 'agent',
+      timestamp: new Date().toISOString(),
+      isLoading: true
+    }]);
+
     try {
       // Get selected text context if available
       const selectedText = getSelectedText();
@@ -64,16 +74,6 @@ const ChatWidget = ({ backendUrl = 'http://localhost:8000', position = 'bottom-r
         similarity_threshold: 0.5,
         context: context
       };
-
-      // Add temporary loading message
-      const loadingId = 'loading-' + Date.now();
-      setMessages(prev => [...prev, {
-        id: loadingId,
-        text: '',
-        sender: 'agent',
-        timestamp: new Date().toISOString(),
-        isLoading: true
-      }]);
 
       // Call the backend API
       const response = await chatApiRef.current.query(inputValue, {
@@ -97,8 +97,8 @@ const ChatWidget = ({ backendUrl = 'http://localhost:8000', position = 'bottom-r
       setMessages(prev => [...prev, agentMessage]);
 
     } catch (err) {
-      // Remove loading message
-      setMessages(prev => prev.filter(msg => msg.isLoading));
+      // Remove loading message - use the loadingId that's now in scope
+      setMessages(prev => prev.filter(msg => msg.id !== loadingId));
 
       console.error('Chat error:', err);
 
